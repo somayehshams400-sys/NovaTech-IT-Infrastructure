@@ -1,0 +1,108 @@
+show run
+Building configuration...
+
+Current configuration : 1427 bytes
+!
+! Last configuration change at 04:50:11 UTC Thu Feb 7 2036
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname RTR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$jL8H$qNHY0UedR/.Z6366Fcahq/
+!
+no aaa new-model
+wan mode ethernet
+!
+!
+!
+ --More--         !
+ --More--         !
+!
+ip domain name novatech.local
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+controller VDSL 0
+ shutdown
+!
+ip ssh version 2
+!
+!
+!
+!
+interface ATM0
+ no ip address
+ shutdown
+ --More--          no atm ilmi-keepalive
+!
+interface Ethernet0
+ no ip address
+ shutdown
+!
+interface FastEthernet0
+ no ip address
+!
+interface FastEthernet1
+ no ip address
+!
+interface FastEthernet2
+ no ip address
+!
+interface FastEthernet3
+ no ip address
+!
+interface GigabitEthernet0
+ ip address dhcp
+ ip nat outside
+ ip virtual-reassembly in
+ duplex auto
+ --More--          speed auto
+!
+interface Vlan1
+ ip address 192.168.10.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+ip nat inside source list 1 interface GigabitEthernet0 overload
+ip route 0.0.0.0 0.0.0.0 dhcp
+!
+access-list 1 permit 192.168.10.0 0.0.0.255
+mac-address-table aging-time 15
+!
+!
+control-plane
+!
+banner motd ^Cunautorized access is prohobited!^C
+!
+line con 0
+ --More--          password 7 14141B180F0B7B797769
+ login
+ no modem enable
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+scheduler allocate 60000 1000
+!
+end
+
+RTR-01#
